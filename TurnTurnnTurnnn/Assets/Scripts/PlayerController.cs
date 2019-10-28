@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public float speed;
     private bool move;
     private bool[] dire;
     private Rigidbody rb;
@@ -21,6 +22,12 @@ public class PlayerController : MonoBehaviour
 
     private GameObject rightObj;
     private PlayerHit rightHit;
+
+    public GameObject firstGimmickMoveWall;
+    private bool firstGimmickMove;
+
+
+    public bool gameEnd;
 
     // Start is called before the first frame update
     void Start()
@@ -41,87 +48,117 @@ public class PlayerController : MonoBehaviour
 
         rightObj = GameObject.Find("RightHit");
         rightHit = rightObj.GetComponent<PlayerHit>();
+
+        firstGimmickMove = false;
+
+        gameEnd = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (move)
+        if (!gameEnd)
         {
-            if(dire[0])
+            if (move)
             {
-                Vector3 pos = this.transform.position;
-                pos.x -= 0.1f;
-                rb.MovePosition(pos);
-
-                if (leftHit.hit)
+                if (dire[0])
                 {
-                    dire[0] = false;
-                    move = false;
+                    Vector3 pos = this.transform.position;
+                    pos.x -= speed;
+                    rb.MovePosition(pos);
+
+                    if (leftHit.hit)
+                    {
+                        dire[0] = false;
+                        move = false;
+                    }
+                }
+                else if (dire[1])
+                {
+                    Vector3 pos = this.transform.position;
+                    pos.x += speed;
+                    rb.MovePosition(pos);
+
+                    if (rightHit.hit)
+                    {
+                        dire[1] = false;
+                        move = false;
+                    }
+                }
+                else if (dire[2])
+                {
+                    Vector3 pos = this.transform.position;
+                    pos.z -= speed;
+                    rb.MovePosition(pos);
+
+                    if (backHit.hit)
+                    {
+                        dire[2] = false;
+                        move = false;
+                    }
+                }
+                else if (dire[3])
+                {
+                    Vector3 pos = this.transform.position;
+                    pos.z += speed;
+                    rb.MovePosition(pos);
+
+                    if (frontHit.hit)
+                    {
+                        dire[3] = false;
+                        move = false;
+                    }
                 }
             }
-            else if (dire[1])
+            else
             {
-                Vector3 pos = this.transform.position;
-                pos.x += 0.1f;
-                rb.MovePosition(pos);
-
-                if (rightHit.hit)
+                if (Input.GetKeyDown(KeyCode.A) && !leftHit.hit)
                 {
-                    dire[1] = false;
-                    move = false;
+                    move = true;
+                    dire[0] = true;
+                }
+
+                if (Input.GetKeyDown(KeyCode.D) && !rightHit.hit)
+                {
+                    move = true;
+                    dire[1] = true;
+                }
+
+                if (Input.GetKeyDown(KeyCode.S) && !backHit.hit)
+                {
+                    move = true;
+                    dire[2] = true;
+                }
+
+                if (Input.GetKeyDown(KeyCode.W) && !frontHit.hit)
+                {
+                    move = true;
+                    dire[3] = true;
                 }
             }
-            else if (dire[2])
-            {
-                Vector3 pos = this.transform.position;
-                pos.z -= 0.1f;
-                rb.MovePosition(pos);
 
-                if (backHit.hit)
-                {
-                    dire[2] = false;
-                    move = false;
-                }
-            }
-            else if (dire[3])
+            if (firstGimmickMove)
             {
-                Vector3 pos = this.transform.position;
-                pos.z += 0.1f;
-                rb.MovePosition(pos);
-
-                if (frontHit.hit)
+                Vector3 pos = firstGimmickMoveWall.transform.position;
+                if (pos.x <= 0.0)
                 {
-                    dire[3] = false;
-                    move = false;
+                    pos.x += 0.1f;
+                    firstGimmickMoveWall.transform.position = pos;
                 }
             }
         }
-        else
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Input.GetKeyDown(KeyCode.A) && !leftHit.hit)
-            {
-                move = true;
-                dire[0] = true;
-            }
+            UnityEngine.Application.Quit();
+        }
+    }
 
-            if (Input.GetKeyDown(KeyCode.D) && !rightHit.hit)
-            {
-                move = true;
-                dire[1] = true;
-            }
-
-            if (Input.GetKeyDown(KeyCode.S) && !backHit.hit)
-            {
-                move = true;
-                dire[2] = true;
-            }
-
-            if (Input.GetKeyDown(KeyCode.W) && !frontHit.hit)
-            {
-                move = true;
-                dire[3] = true;
-            }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("FirstGimmick"))
+        {
+            firstGimmickMove = true;
         }
     }
 }

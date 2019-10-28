@@ -9,6 +9,7 @@ TagManager:
   - RightObj
   - BackObj
   - LeftObj
+  - FirstGimmick
   layers:
   - Default
   - TransparentFX
