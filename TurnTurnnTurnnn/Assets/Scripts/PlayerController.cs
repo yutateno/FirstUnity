@@ -11,16 +11,16 @@ public class PlayerController : MonoBehaviour
 
 
     private GameObject backObj;
-    private BackHitObject backHit;
+    private PlayerHit backHit;
 
     private GameObject frontObj;
-    private FrontHitObject frontHit;
+    private PlayerHit frontHit;
 
     private GameObject leftObj;
-    private LeftHitObject leftHit;
+    private PlayerHit leftHit;
 
     private GameObject rightObj;
-    private RightHitObject rightHit;
+    private PlayerHit rightHit;
 
     // Start is called before the first frame update
     void Start()
@@ -31,16 +31,16 @@ public class PlayerController : MonoBehaviour
 
 
         backObj = GameObject.Find("BackHit");
-        backHit = backObj.GetComponent<BackHitObject>();
+        backHit = backObj.GetComponent<PlayerHit>();
 
         frontObj = GameObject.Find("FrontHit");
-        frontHit = frontObj.GetComponent<FrontHitObject>();
+        frontHit = frontObj.GetComponent<PlayerHit>();
 
         leftObj = GameObject.Find("LeftHit");
-        leftHit = leftObj.GetComponent<LeftHitObject>();
+        leftHit = leftObj.GetComponent<PlayerHit>();
 
         rightObj = GameObject.Find("RightHit");
-        rightHit = rightObj.GetComponent<RightHitObject>();
+        rightHit = rightObj.GetComponent<PlayerHit>();
     }
 
     // Update is called once per frame

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FrontHitObject : MonoBehaviour
+public class PlayerHit : MonoBehaviour
 {
     public bool hit;
 
